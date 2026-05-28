@@ -586,10 +586,24 @@ function useContactForm(t) {
     setErrs(e2);
     if (Object.keys(e2).length) return;
     setStatus('sending');
-    setTimeout(() => {
-      setStatus('sent');
-      setVals({ name: '', email: '', company: '', message: '' });
-    }, 850);
+    fetch('https://formspree.io/f/mgoqdwqp', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: vals.name, email: vals.email, company: vals.company, message: vals.message }),
+    })
+      .then((r) => {
+        if (r.ok) {
+          setStatus('sent');
+          setVals({ name: '', email: '', company: '', message: '' });
+        } else {
+          setStatus('idle');
+          alert('Odeslání se nezdařilo, zkuste to prosím znovu.');
+        }
+      })
+      .catch(() => {
+        setStatus('idle');
+        alert('Odeslání se nezdařilo, zkuste to prosím znovu.');
+      });
   };
 
   return { vals, errs, status, set, submit };
