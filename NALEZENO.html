@@ -1,0 +1,1965 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nalezeno — Get found. Get called.</title>
+<meta name="description" content="Websites and search visibility for small businesses that earn their next customer from a Google result. Built by hand." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #fff;
+    color: #0a0a0a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  button { font: inherit; }
+  ::selection { background: #0a0a0a; color: #fff; }
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- tweaks-panel -->
+<script type="text/babel">
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;overflow-wrap:anywhere}
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+`;
+
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(clampToViewport) : null;
+    if (ro) { ro.observe(document.documentElement); return () => ro.disconnect(); }
+    window.addEventListener('resize', clampToViewport);
+    return () => window.removeEventListener('resize', clampToViewport);
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel"
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+function TweakSection({ label, children }) {
+  return (
+    <>
+      <div className="twk-sect">{label}</div>
+      {children}
+    </>
+  );
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
+
+  if (!fitsAsSegments) {
+    return (
+      <TweakRow label={label}>
+        <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+          {options.map((o) => {
+            const v = typeof o === 'object' ? o.value : o;
+            const l = typeof o === 'object' ? o.label : o;
+            return <option key={v} value={v}>{l}</option>;
+          })}
+        </select>
+      </TweakRow>
+    );
+  }
+
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+                      width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+Object.assign(window, { useTweaks, TweaksPanel, TweakSection, TweakRow, TweakRadio });
+</script>
+
+<!-- i18n -->
+<script type="text/babel">
+const I18N = {
+  en: {
+    brand: "NALEZENO",
+    nav: {
+      services: "Services",
+      work: "Work",
+      pricing: "Pricing",
+      reviews: "Reviews",
+      contact: "Contact",
+    },
+    locale_label: "EN",
+    locale_alt: "CZ",
+    hero: {
+      kicker: "Independent studio — Brno, est. 2024",
+      title_l1: "Get found.",
+      title_l2: "Get called.",
+      sub: "Websites and search visibility for small businesses that earn their next customer from a Google result. Built by hand.",
+      cta_primary: "Start a project",
+      cta_secondary: "What we do",
+    },
+    services: {
+      kicker: "01 — What we do",
+      headline: "Three services. One outcome: customers find you first.",
+      a_title: "Websites",
+      a_body: "Customers search for you online — and the first impression decides within three seconds. I'll build you a site that looks professional, loads fast, and convinces visitors to call or come in.",
+      a_items: ["Up to 5 pages: home, services, pricing, gallery, contact", "Design tailored to your industry", "Clear, concise, no fluff", "Google Analytics setup — see who visited", "Basic SEO from day one"],
+      b_title: "SEO",
+      b_body: "When someone nearby searches for your service on Google, you want to be the first thing they see — not the third page of results. I take care of your Google profile every month so customers find you before your competitors. No lock-in — leave whenever it stops paying off.",
+      b_items: ["Google Business profile management & optimisation", "Review responses within 48 hours", "Regular posts & up-to-date photos of your business", "Listings on map services & directories", "Monthly report: how many people found, called, or asked for directions"],
+      c_title: "Meta Ads",
+      c_body: "A properly set up ad on Facebook and Instagram brings customers from your area — not random clickers. I measure results in inquiries and calls, not flattering click-throughs. Your ad budget goes straight to your account — no hidden fees.",
+      c_items: ["Audience research: who your customers are in the area", "Creating ad creative and copy", "Targeting within 5–15 km of your business", "A/B testing — we go with what works", "Monthly performance report in numbers"],
+    },
+    process: {
+      kicker: "How we work",
+      steps: [
+        { n: "A", t: "Listen", b: "One conversation. What you sell, who buys, what's costing you sleep." },
+        { n: "B", t: "Audit", b: "Where you stand in search, what your site is doing wrong, what's worth fixing first." },
+        { n: "C", t: "Build", b: "Design, write, ship. Two to six weeks for a typical small-business site." },
+        { n: "D", t: "Rank", b: "Ongoing SEO if it pays back. We tell you when it doesn't." },
+      ],
+    },
+    work: {
+      kicker: "02 — Selected work",
+      headline: "Small businesses. Real numbers.",
+      items: [
+        { n: "01", name: "Bistro Vinohrady", kind: "Restaurant · website + local SEO", metric: "+208% organic traffic", window: "4 months" },
+        { n: "02", name: "Klempířství Novák", kind: "Trade · local SEO only", metric: "Top 3 for 12 long-tail terms", window: "6 months" },
+        { n: "03", name: "Studio Línea", kind: "Interior design · website", metric: "60-day build, full handoff", window: "—" },
+        { n: "04", name: "Atelier Zima", kind: "Photography · landing rebuild", metric: "3.2× conversion rate", window: "After launch" },
+      ],
+    },
+    pricing: {
+      kicker: "03 — Pricing",
+      headline: "Plain pricing. No retainers if you don't need one.",
+      note: "Final quote depends on scope. Numbers below are typical starting points for small businesses.",
+      tiers: [
+        {
+          name: "Web",
+          price: "from 8 000 Kč",
+          unit: "one-off + 1 500 Kč hosting / month",
+          items: ["Up to 5 pages", "Design, build & launch", "Czech copywriting included", "Google Analytics setup", "Basic on-page SEO"],
+        },
+        {
+          name: "SEO",
+          price: "from 1 500 Kč",
+          unit: "per month",
+          items: ["Google Business Profile management", "Review responses within 48h", "4× Google Posts per month", "Local listings & citations", "Monthly performance report", "Cancel any month"],
+          featured: true,
+        },
+        {
+          name: "Ads",
+          price: "from 8 000 Kč",
+          unit: "per month + ad spend",
+          items: ["Facebook & Instagram ads", "Google Ads — Performance Max", "Campaign setup & creatives", "A/B testing", "Monthly performance report", "Cancel any month"],
+        },
+      ],
+    },
+    reviews: {
+      kicker: "04 — Reviews",
+      headline: "What clients say.",
+      source: "Pulled from Google Business profile",
+      stats_avg: "5.0",
+      stats_avg_label: "average",
+      stats_count: "14",
+      stats_count_label: "reviews",
+      items: [
+        { name: "Tomáš H.", when: "3 weeks ago", stars: 5, body: "Clear communication and the site shipped a week early. Six months in, we're on page one for everything we asked for. Worth twice what we paid." },
+        { name: "Eva M.", when: "1 month ago", stars: 5, body: "Finally a website that brings in customers instead of just looking pretty. Process is direct, fast, and explains the SEO part in plain Czech." },
+        { name: "Petr S.", when: "2 months ago", stars: 5, body: "We doubled inquiries inside three months of the SEO audit. Recommended to anyone who's actually serious about getting found." },
+        { name: "Jana K.", when: "4 months ago", stars: 5, body: "Built our restaurant site and the booking traffic is up massively. No technical headaches, no hidden costs. Calm and professional." },
+      ],
+    },
+    contact: {
+      kicker: "05 — Start a project",
+      headline: "Tell us about it.",
+      sub: "One conversation, no pitch. We'll write back within a working day.",
+      labels: { name: "Name", email: "Email", company: "Company (optional)", message: "What are you trying to fix?", send: "Send", sending: "Sending…", sent: "Thanks — we'll reply within a working day." },
+      errors: { name: "Please tell us your name.", email: "We need a valid email address.", message: "A line or two about the project, please." },
+      direct: "Or write directly:",
+      email: "parenica.metaads@gmail.com",
+      phone: "+420 776 605 311",
+    },
+    footer: {
+      address: "Nalezeno · Brno · Czech Republic",
+      copy: "© 2026 Nalezeno",
+      links: ["Imprint", "Privacy"],
+    },
+  },
+  cs: {
+    brand: "NALEZENO",
+    nav: {
+      services: "Služby",
+      work: "Práce",
+      pricing: "Ceník",
+      reviews: "Reference",
+      contact: "Kontakt",
+    },
+    locale_label: "CZ",
+    locale_alt: "EN",
+    hero: {
+      kicker: "Nezávislé studio — Brno, založeno 2024",
+      title_l1: "Buďte nalezeni.",
+      title_l2: "Buďte voláni.",
+      sub: "Weby a viditelnost ve vyhledávání pro malé firmy, které svého dalšího zákazníka získávají z Googlu. Tvořeno ručně.",
+      cta_primary: "Začít projekt",
+      cta_secondary: "Co děláme",
+    },
+    services: {
+      kicker: "01 — Co děláme",
+      headline: "Tři služby. Jeden výsledek: zákazník najde nejdřív vás.",
+      a_title: "Webové stránky",
+      a_body: "Zákazníci vás hledají online — a první dojem rozhoduje během tří sekund. Postavím vám web, který vypadá profesionálně, načítá se rychle a přesvědčí návštěvníka, aby zavolal nebo přišel.",
+      a_items: ["Až 5 stránek: úvod, služby, ceník, galerie, kontakt", "Design přizpůsobený vašemu oboru", "Česky, přehledně, bez zbytečností", "Nastavení Google Analytics — víte kdo vás navštívil", "Základní SEO od prvního dne"],
+      b_title: "SEO",
+      b_body: "Když někdo v okolí hledá vaši službu na Googlu, chcete být první co uvidí — ne třetí stránka výsledků. Starám se o váš Google profil každý měsíc, aby vás zákazníci našli dřív než konkurenci. Bez vázanosti — odejdete, kdykoliv se to přestane vyplácet.",
+      b_items: ["Správa a optimalizace Google Business profilu", "Odpovědi na recenze do 48 hodin", "Pravidelné příspěvky a aktuální fotky provozovny", "Zápis na mapových službách a adresářích", "Měsíční report: kolik lidí vás našlo, zavolalo, hledalo trasu"],
+      c_title: "Reklamy na Meta",
+      c_body: "Správně nastavená reklama na Facebooku a Instagramu přivede zákazníky z vašeho okolí — ne náhodné klikače. Měřím výsledky poptávkami a hovory, ne lichotivými prokliknutími. Váš reklamní rozpočet jde přímo na váš účet — žádné skryté poplatky.",
+      c_items: ["Průzkum publika: kdo jsou vaši zákazníci v okolí", "Tvorba kreativ a textů reklam", "Cílení na okruh 5–15 km od vaší provozovny", "A/B testování — jedeme s tím co funguje", "Měsíční report výkonu v číslech"],
+    },
+    process: {
+      kicker: "Jak pracujeme",
+      steps: [
+        { n: "A", t: "Posloucháme", b: "Jeden hovor. Co prodáváte, kdo nakupuje, co vás stojí spánek." },
+        { n: "B", t: "Audit", b: "Kde stojíte ve vyhledávání, co web dělá špatně, co opravit nejdřív." },
+        { n: "C", t: "Stavíme", b: "Návrh, copy, nasazení. Dva až šest týdnů pro typický web malé firmy." },
+        { n: "D", t: "Rosteme", b: "Průběžné SEO, pokud se vrací. Když ne, řekneme to." },
+      ],
+    },
+    work: {
+      kicker: "02 — Vybrané práce",
+      headline: "Malé firmy. Skutečná čísla.",
+      items: [
+        { n: "01", name: "Bistro Vinohrady", kind: "Restaurace · web + lokální SEO", metric: "+208 % organické návštěvnosti", window: "4 měsíce" },
+        { n: "02", name: "Klempířství Novák", kind: "Řemeslo · jen lokální SEO", metric: "Top 3 na 12 long-tail frází", window: "6 měsíců" },
+        { n: "03", name: "Studio Línea", kind: "Interiérový design · web", metric: "60denní build, plné předání", window: "—" },
+        { n: "04", name: "Atelier Zima", kind: "Fotografie · landing page", metric: "3,2× konverzní poměr", window: "Po spuštění" },
+      ],
+    },
+    pricing: {
+      kicker: "03 — Ceník",
+      headline: "Jasné ceny. Žádný paušál, když ho nepotřebujete.",
+      note: "Konečná cena záleží na rozsahu. Čísla níže jsou typický startovní bod pro malé firmy.",
+      tiers: [
+        {
+          name: "Web",
+          price: "od 8 000 Kč",
+          unit: "jednorázově + 1 500 Kč hosting / měsíc",
+          items: ["Až 5 stránek", "Design, vývoj a spuštění", "České copywriting v ceně", "Nastavení Google Analytics", "Základní on-page SEO"],
+        },
+        {
+          name: "SEO",
+          price: "od 1 500 Kč",
+          unit: "měsíčně",
+          items: ["Správa profilu Google Business", "Odpovědi na recenze do 48 h", "4× Google Posts měsíčně", "Lokální zápisy a citace", "Měsíční report výkonu", "Můžete kdykoliv zrušit"],
+          featured: true,
+        },
+        {
+          name: "Reklamy",
+          price: "od 8 000 Kč",
+          unit: "měsíčně + rozpočet na reklamu",
+          items: ["Reklamy na Facebooku a Instagramu", "Google Ads — Performance Max", "Nastavení kampaní a kreativy", "A/B testování", "Měsíční report výkonu", "Můžete kdykoliv zrušit"],
+        },
+      ],
+    },
+    reviews: {
+      kicker: "04 — Reference",
+      headline: "Co říkají klienti.",
+      source: "Stahováno z profilu Google Business",
+      stats_avg: "5,0",
+      stats_avg_label: "průměr",
+      stats_count: "14",
+      stats_count_label: "recenzí",
+      items: [
+        { name: "Tomáš H.", when: "před 3 týdny", stars: 5, body: "Komunikace na úrovni a web doručen dřív, než jsme čekali. Za půl roku jsme na první stránce Google na všechny klíčové fráze. Stálo to dvakrát víc, než jsme zaplatili." },
+        { name: "Eva M.", when: "před měsícem", stars: 5, body: "Konečně web, který přivádí zákazníky, ne jen vypadá pěkně. Filip jde rovnou k věci a SEO vysvětluje srozumitelně." },
+        { name: "Petr S.", when: "před 2 měsíci", stars: 5, body: "Po SEO auditu jsme za tři měsíce zdvojnásobili poptávky. Doporučuju každému, kdo to s byznysem myslí vážně." },
+        { name: "Jana K.", when: "před 4 měsíci", stars: 5, body: "Postavil nám web pro restauraci a rezervace vyrostly o stovky procent. Žádné technické bolesti, žádné skryté náklady. Klidný a profesionální." },
+      ],
+    },
+    contact: {
+      kicker: "05 — Začněte projekt",
+      headline: "Napište nám.",
+      sub: "Odpovíme do jednoho pracovního dne.",
+      labels: { name: "Jméno", email: "E-mail", company: "Firma (volitelné)", message: "Co potřebujete vyřešit?", send: "Odeslat", sending: "Odesílám…", sent: "Děkujeme — ozveme se do jednoho pracovního dne." },
+      errors: { name: "Napište prosím své jméno.", email: "Potřebujeme platnou e-mailovou adresu.", message: "Pár vět o projektu, prosím." },
+      direct: "Nebo rovnou napište:",
+      email: "parenica.metaads@gmail.com",
+      phone: "+420 776 605 311",
+    },
+    footer: {
+      address: "Nalezeno · Brno · Česká republika",
+      copy: "© 2026 Nalezeno",
+      links: ["Tiráž", "Soukromí"],
+    },
+  },
+};
+
+Object.assign(window, { I18N });
+</script>
+
+<!-- shared -->
+<script type="text/babel">
+function useReveal(threshold = 0.15) {
+  const ref = React.useRef(null);
+  const [shown, setShown] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (shown) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setShown(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) { setShown(true); io.disconnect(); break; }
+        }
+      },
+      { threshold, rootMargin: '0px 0px -8% 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [shown, threshold]);
+  return [ref, shown];
+}
+
+function Reveal({ children, delay = 0, y = 18, as = 'div', style, ...rest }) {
+  const [ref, shown] = useReveal();
+  const Tag = as;
+  return (
+    <Tag
+      ref={ref}
+      style={{
+        opacity: shown ? 1 : 0,
+        transform: shown ? 'translateY(0)' : `translateY(${y}px)`,
+        transition: `opacity .9s cubic-bezier(.2,.7,.2,1) ${delay}ms, transform .9s cubic-bezier(.2,.7,.2,1) ${delay}ms`,
+        willChange: 'opacity, transform',
+        ...style,
+      }}
+      {...rest}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+function useContactForm(t) {
+  const [vals, setVals] = React.useState({ name: '', email: '', company: '', message: '' });
+  const [errs, setErrs] = React.useState({});
+  const [status, setStatus] = React.useState('idle');
+
+  const set = (k) => (e) => {
+    setVals((v) => ({ ...v, [k]: e.target.value }));
+    if (errs[k]) setErrs((er) => ({ ...er, [k]: undefined }));
+  };
+
+  const validate = () => {
+    const e = {};
+    if (!vals.name.trim()) e.name = t.contact.errors.name;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(vals.email.trim())) e.email = t.contact.errors.email;
+    if (vals.message.trim().length < 10) e.message = t.contact.errors.message;
+    return e;
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+    const e2 = validate();
+    setErrs(e2);
+    if (Object.keys(e2).length) return;
+    setStatus('sending');
+    setTimeout(() => {
+      setStatus('sent');
+      setVals({ name: '', email: '', company: '', message: '' });
+    }, 850);
+  };
+
+  return { vals, errs, status, set, submit };
+}
+
+function Stars({ n = 5, size = 14, color = '#FBBC04' }) {
+  return (
+    <span style={{ display: 'inline-flex', gap: 1, lineHeight: 0, verticalAlign: 'middle' }}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 2l2.9 6.9 7.5.6-5.7 4.9 1.8 7.3L12 17.8 5.5 21.7l1.8-7.3L1.6 9.5l7.5-.6L12 2z"
+            fill={i < n ? color : 'rgba(0,0,0,.12)'}
+          />
+        </svg>
+      ))}
+    </span>
+  );
+}
+
+function Placeholder({ label = 'image', ratio = 1.5, dark = false, style }) {
+  const fg = dark ? '#fff' : '#0a0a0a';
+  const bg = dark ? '#0a0a0a' : '#f5f4f1';
+  return (
+    <div
+      role="img"
+      aria-label={label}
+      style={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: `${ratio} / 1`,
+        background: bg,
+        backgroundImage: `repeating-linear-gradient(135deg, transparent 0 14px, ${
+          dark ? 'rgba(255,255,255,.045)' : 'rgba(0,0,0,.045)'
+        } 14px 15px)`,
+        color: fg,
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-start',
+        padding: 18,
+        ...style,
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace',
+          fontSize: 11,
+          letterSpacing: '.08em',
+          textTransform: 'uppercase',
+          opacity: .55,
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function GoogleG({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21.6 12.23c0-.74-.07-1.45-.2-2.13H12v4.02h5.4a4.62 4.62 0 0 1-2 3.03v2.51h3.23c1.89-1.74 2.97-4.3 2.97-7.43z" fill="#4285F4"/>
+      <path d="M12 22c2.7 0 4.96-.9 6.62-2.43l-3.24-2.51c-.9.6-2.05.96-3.38.96-2.6 0-4.8-1.75-5.58-4.11H3.07v2.58A10 10 0 0 0 12 22z" fill="#34A853"/>
+      <path d="M6.42 13.91A6 6 0 0 1 6.1 12c0-.66.11-1.3.32-1.91V7.5H3.07A10 10 0 0 0 2 12c0 1.61.39 3.14 1.07 4.5l3.35-2.59z" fill="#FBBC04"/>
+      <path d="M12 6.38c1.47 0 2.79.51 3.83 1.5l2.87-2.87C16.95 3.39 14.7 2.5 12 2.5A10 10 0 0 0 3.07 7.5l3.35 2.59C7.2 8.13 9.4 6.38 12 6.38z" fill="#EA4335"/>
+    </svg>
+  );
+}
+
+function ReviewCard({ r, variant = 'a' }) {
+  const initials = r.name.split(' ').map((s) => s[0]).join('').slice(0, 2);
+  return (
+    <article
+      style={{
+        background: '#fff',
+        border: variant === 'b' ? '1px solid #0a0a0a' : '1px solid rgba(0,0,0,.12)',
+        padding: variant === 'b' ? '28px 28px 30px' : '32px 30px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 18,
+      }}
+    >
+      <header style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div
+          aria-hidden="true"
+          style={{
+            width: 40, height: 40, borderRadius: '50%',
+            background: '#0a0a0a', color: '#fff',
+            display: 'grid', placeItems: 'center',
+            fontWeight: 600, fontSize: 14, letterSpacing: '.04em',
+          }}
+        >
+          {initials}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <span style={{ fontWeight: 600, fontSize: 14 }}>{r.name}</span>
+          <span style={{ fontSize: 11.5, letterSpacing: '.04em', textTransform: 'uppercase', opacity: .55 }}>{r.when}</span>
+        </div>
+      </header>
+      <Stars n={r.stars} />
+      <p style={{ margin: 0, fontSize: 15, lineHeight: 1.6, color: '#1a1a1a', textWrap: 'pretty' }}>{r.body}</p>
+      <footer style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', opacity: .55 }}>
+        <GoogleG size={12} /> <span>Google</span>
+      </footer>
+    </article>
+  );
+}
+
+Object.assign(window, { useReveal, Reveal, useContactForm, Stars, Placeholder, ReviewCard, GoogleG });
+</script>
+
+<!-- direction-a -->
+<script type="text/babel">
+function DirectionA({ t, lang, onToggleLang }) {
+  const form = useContactForm(t);
+
+  return (
+    <div style={dirAShell}>
+      <header style={dirANav}>
+        <div style={dirANavInner}>
+          <a href="#top" style={dirANavBrand}>{t.brand}</a>
+          <nav style={dirANavLinks} aria-label="Primary">
+            <a href="#services" style={dirANavLink}>{t.nav.services}</a>
+            <a href="#work" style={dirANavLink}>{t.nav.work}</a>
+            <a href="#pricing" style={dirANavLink}>{t.nav.pricing}</a>
+            <a href="#reviews" style={dirANavLink}>{t.nav.reviews}</a>
+            <a href="#contact" style={dirANavLink}>{t.nav.contact}</a>
+          </nav>
+          <button onClick={onToggleLang} style={dirALangBtn} aria-label="Toggle language">
+            <span style={{ fontWeight: 700 }}>{t.locale_label}</span>
+            <span aria-hidden="true" style={{ opacity: .35, margin: '0 6px' }}>/</span>
+            <span style={{ opacity: .45 }}>{t.locale_alt}</span>
+          </button>
+        </div>
+      </header>
+
+      <section id="top" style={dirAHero}>
+        <Reveal>
+          <p style={dirAKicker}>{t.hero.kicker}</p>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <div style={dirAHeroImageWrap}>
+            <Placeholder label="hero image — studio still life" ratio={1.05} />
+          </div>
+        </Reveal>
+
+        <Reveal delay={240}>
+          <h1 style={dirABrandmark}>{t.brand}</h1>
+        </Reveal>
+
+        <Reveal delay={360}>
+          <div style={dirATaglineBlock}>
+            <p style={dirATaglineLine}>{t.hero.title_l1}</p>
+            <p style={{ ...dirATaglineLine, fontStyle: 'italic' }}>{t.hero.title_l2}</p>
+            <p style={dirAHeroSub}>{t.hero.sub}</p>
+            <div style={dirACtaRow}>
+              <a href="#contact" style={dirACtaPrimary}>{t.hero.cta_primary} →</a>
+              <a href="#services" style={dirACtaSecondary}>{t.hero.cta_secondary}</a>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      <hr style={dirARule} />
+
+      <section id="services" style={dirASection}>
+        <Reveal>
+          <p style={dirASectionKicker}>{t.services.kicker}</p>
+        </Reveal>
+        <Reveal delay={80}>
+          <h2 style={dirASectionH}>{t.services.headline}</h2>
+        </Reveal>
+
+        <div style={dirAServicesGrid}>
+          {[
+            { title: t.services.a_title, body: t.services.a_body, items: t.services.a_items, num: 'A' },
+            { title: t.services.b_title, body: t.services.b_body, items: t.services.b_items, num: 'B' },
+            { title: t.services.c_title, body: t.services.c_body, items: t.services.c_items, num: 'C' },
+          ].map((s, i) => (
+            <Reveal key={s.title} delay={i * 140}>
+              <article style={dirAServiceCard}>
+                <div style={dirAServiceNum}>{s.num}</div>
+                <h3 style={dirAServiceTitle}>{s.title}</h3>
+                <p style={dirAServiceBody}>{s.body}</p>
+                <ul style={dirAServiceList}>
+                  {s.items.map((it) => (
+                    <li key={it} style={dirAServiceItem}>{it}</li>
+                  ))}
+                </ul>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <hr style={dirARule} />
+
+      <section id="work" style={dirASection}>
+        <Reveal>
+          <p style={dirASectionKicker}>{t.work.kicker}</p>
+        </Reveal>
+        <Reveal delay={80}>
+          <h2 style={dirASectionH}>{t.work.headline}</h2>
+        </Reveal>
+
+        <div style={dirAWorkList}>
+          {t.work.items.map((w, i) => (
+            <Reveal key={w.n} delay={i * 90}>
+              <article style={dirAWorkRow}>
+                <span style={dirAWorkNum}>{w.n}</span>
+                <div style={dirAWorkBody}>
+                  <h3 style={dirAWorkName}>{w.name}</h3>
+                  <p style={dirAWorkKind}>{w.kind}</p>
+                </div>
+                <div style={dirAWorkMetric}>
+                  <p style={dirAWorkMetricMain}>{w.metric}</p>
+                  <p style={dirAWorkMetricSub}>{w.window}</p>
+                </div>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <hr style={dirARule} />
+
+      <section id="pricing" style={dirASection}>
+        <Reveal>
+          <p style={dirASectionKicker}>{t.pricing.kicker}</p>
+        </Reveal>
+        <Reveal delay={80}>
+          <h2 style={dirASectionH}>{t.pricing.headline}</h2>
+        </Reveal>
+        <Reveal delay={160}>
+          <p style={dirASectionNote}>{t.pricing.note}</p>
+        </Reveal>
+
+        <div style={dirAPricingGrid}>
+          {t.pricing.tiers.map((tier, i) => (
+            <Reveal key={tier.name} delay={i * 120}>
+              <article style={{ ...dirAPriceCard, ...(tier.featured ? dirAPriceCardFeatured : {}) }}>
+                <header style={dirAPriceHead}>
+                  <h3 style={dirAPriceName}>{tier.name}</h3>
+                  {tier.featured && <span style={dirAPriceBadge}>★</span>}
+                </header>
+                <p style={dirAPricePrice}>{tier.price}</p>
+                <p style={dirAPriceUnit}>{tier.unit}</p>
+                <ul style={dirAPriceList}>
+                  {tier.items.map((it) => (
+                    <li key={it} style={dirAPriceItem}>
+                      <span aria-hidden="true" style={{ opacity: .35, marginRight: 10 }}>—</span>{it}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <hr style={dirARule} />
+
+      <section id="reviews" style={dirASection}>
+        <Reveal>
+          <p style={dirASectionKicker}>{t.reviews.kicker}</p>
+        </Reveal>
+        <Reveal delay={80}>
+          <h2 style={dirASectionH}>{t.reviews.headline}</h2>
+        </Reveal>
+
+        <Reveal delay={140}>
+          <div style={dirAReviewSummary}>
+            <div style={dirAReviewStatBig}>{t.reviews.stats_avg}</div>
+            <div style={dirAReviewStatMeta}>
+              <Stars n={5} size={16} />
+              <p style={dirAReviewStatLabel}>{t.reviews.stats_count} {t.reviews.stats_count_label}</p>
+              <p style={dirAReviewSource}><GoogleG size={11} /> {t.reviews.source}</p>
+            </div>
+          </div>
+        </Reveal>
+
+        <div style={dirAReviewGrid}>
+          {t.reviews.items.map((r, i) => (
+            <Reveal key={r.name} delay={i * 100}>
+              <ReviewCard r={r} variant="a" />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <hr style={dirARule} />
+
+      <section id="contact" style={dirASection}>
+        <Reveal>
+          <p style={dirASectionKicker}>{t.contact.kicker}</p>
+        </Reveal>
+        <Reveal delay={80}>
+          <h2 style={dirASectionH}>{t.contact.headline}</h2>
+        </Reveal>
+        <Reveal delay={160}>
+          <p style={dirASectionNote}>{t.contact.sub}</p>
+        </Reveal>
+
+        <div style={dirAContactGrid}>
+          <Reveal style={{ height: '100%' }}>
+            <form onSubmit={form.submit} style={dirAForm} noValidate>
+              <AField
+                label={t.contact.labels.name}
+                value={form.vals.name}
+                onChange={form.set('name')}
+                error={form.errs.name}
+                name="name"
+                autoComplete="name"
+              />
+              <AField
+                label={t.contact.labels.email}
+                value={form.vals.email}
+                onChange={form.set('email')}
+                error={form.errs.email}
+                name="email"
+                type="email"
+                autoComplete="email"
+              />
+              <AField
+                label={t.contact.labels.company}
+                value={form.vals.company}
+                onChange={form.set('company')}
+                name="company"
+                autoComplete="organization"
+              />
+              <AField
+                label={t.contact.labels.message}
+                value={form.vals.message}
+                onChange={form.set('message')}
+                error={form.errs.message}
+                name="message"
+                multiline
+              />
+
+              <div style={dirAFormFooter}>
+                <button type="submit" disabled={form.status === 'sending'} style={dirASubmit}>
+                  {form.status === 'sending' ? t.contact.labels.sending : t.contact.labels.send} →
+                </button>
+                {form.status === 'sent' && (
+                  <p role="status" style={dirAFormStatus}>{t.contact.labels.sent}</p>
+                )}
+              </div>
+            </form>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <aside style={dirAContactSide}>
+              <p style={dirAContactSideLabel}>{t.contact.direct}</p>
+              <a href={`mailto:${t.contact.email}`} style={dirAContactSideLink}>{t.contact.email}</a>
+              <a href={`tel:${t.contact.phone.replace(/\s/g, '')}`} style={dirAContactSideLink}>{t.contact.phone}</a>
+            </aside>
+          </Reveal>
+        </div>
+      </section>
+
+      <footer style={dirAFooter}>
+        <div style={dirAFooterInner}>
+          <h2 style={dirAFooterBrand}>{t.brand}</h2>
+          <div style={dirAFooterMeta}>
+            <p style={{ margin: 0 }}>{t.footer.address}</p>
+            <p style={{ margin: 0, opacity: .55 }}>{t.footer.copy}</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function AField({ label, value, onChange, error, multiline, type = 'text', name, autoComplete }) {
+  const [focus, setFocus] = React.useState(false);
+  const id = 'f-' + name;
+  return (
+    <div style={dirAFieldWrap}>
+      <label htmlFor={id} style={dirAFieldLabel}>{label}</label>
+      {multiline ? (
+        <textarea
+          id={id}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          rows={4}
+          style={{
+            ...dirAFieldInput,
+            resize: 'vertical',
+            minHeight: 96,
+            borderColor: error ? '#000' : focus ? '#000' : 'rgba(0,0,0,.18)',
+          }}
+        />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          style={{
+            ...dirAFieldInput,
+            borderColor: error ? '#000' : focus ? '#000' : 'rgba(0,0,0,.18)',
+          }}
+        />
+      )}
+      {error && <p style={dirAFieldError}>↑ {error}</p>}
+    </div>
+  );
+}
+
+const A_BLACK = '#0a0a0a';
+const A_BG = '#ffffff';
+const A_RULE = 'rgba(0,0,0,.14)';
+const A_FONT = '"Helvetica Neue", Helvetica, Arial, sans-serif';
+
+const dirAShell = {
+  fontFamily: A_FONT,
+  color: A_BLACK,
+  background: A_BG,
+  fontSynthesis: 'none',
+  WebkitFontSmoothing: 'antialiased',
+  lineHeight: 1.4,
+};
+const dirANav = {
+  position: 'sticky', top: 0, zIndex: 20,
+  background: 'rgba(255,255,255,.92)',
+  backdropFilter: 'saturate(140%) blur(8px)',
+  borderBottom: `1px solid ${A_RULE}`,
+};
+const dirANavInner = {
+  maxWidth: 1280, margin: '0 auto',
+  padding: '18px 56px',
+  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+  gap: 40,
+};
+const dirANavBrand = {
+  fontSize: 13, fontWeight: 800, letterSpacing: '.18em',
+  textDecoration: 'none', color: A_BLACK,
+};
+const dirANavLinks = { display: 'flex', gap: 32 };
+const dirANavLink = {
+  fontSize: 12, fontWeight: 600, letterSpacing: '.16em',
+  textTransform: 'uppercase', textDecoration: 'none', color: A_BLACK,
+};
+const dirALangBtn = {
+  border: '1px solid rgba(0,0,0,.18)', background: 'transparent',
+  padding: '7px 14px', fontFamily: A_FONT,
+  fontSize: 11, letterSpacing: '.16em', cursor: 'pointer',
+  textTransform: 'uppercase',
+};
+const dirAHero = {
+  maxWidth: 1280, margin: '0 auto',
+  padding: '120px 56px 140px',
+  display: 'flex', flexDirection: 'column', alignItems: 'center',
+  textAlign: 'center',
+};
+const dirAKicker = {
+  fontSize: 11, fontWeight: 600, letterSpacing: '.22em',
+  textTransform: 'uppercase', margin: 0, opacity: .55,
+};
+const dirAHeroImageWrap = {
+  margin: '72px auto 0',
+  width: 'min(640px, 60%)',
+};
+const dirABrandmark = {
+  fontSize: 'clamp(96px, 16vw, 240px)',
+  fontWeight: 900,
+  letterSpacing: '-.05em',
+  lineHeight: .85,
+  margin: '64px 0 0',
+};
+const dirATaglineBlock = {
+  marginTop: 56,
+  maxWidth: 620,
+  textAlign: 'center',
+};
+const dirATaglineLine = {
+  fontSize: 'clamp(28px, 3.4vw, 44px)',
+  fontWeight: 700,
+  letterSpacing: '-.02em',
+  lineHeight: 1.05,
+  margin: 0,
+};
+const dirAHeroSub = {
+  marginTop: 28,
+  fontSize: 16, lineHeight: 1.6,
+  opacity: .7, textWrap: 'pretty',
+};
+const dirACtaRow = { display: 'flex', justifyContent: 'center', gap: 28, marginTop: 44, flexWrap: 'wrap' };
+const dirACtaPrimary = {
+  background: A_BLACK, color: '#fff',
+  textDecoration: 'none',
+  padding: '16px 28px',
+  fontSize: 12, fontWeight: 700, letterSpacing: '.16em',
+  textTransform: 'uppercase',
+};
+const dirACtaSecondary = {
+  color: A_BLACK, textDecoration: 'none',
+  padding: '16px 0',
+  fontSize: 12, fontWeight: 700, letterSpacing: '.16em',
+  textTransform: 'uppercase',
+  borderBottom: `1px solid ${A_BLACK}`,
+};
+const dirARule = {
+  border: 0,
+  borderTop: `1px solid ${A_RULE}`,
+  margin: 0,
+  maxWidth: 1280,
+  marginInline: 'auto',
+};
+const dirASection = {
+  maxWidth: 1280, margin: '0 auto',
+  padding: '140px 56px',
+};
+const dirASectionKicker = {
+  fontSize: 11, fontWeight: 700, letterSpacing: '.22em',
+  textTransform: 'uppercase', margin: 0, opacity: .55,
+};
+const dirASectionH = {
+  fontSize: 'clamp(40px, 5.5vw, 72px)',
+  fontWeight: 800, letterSpacing: '-.03em',
+  lineHeight: 1.02,
+  margin: '24px 0 0',
+  maxWidth: 920,
+  textWrap: 'balance',
+};
+const dirASectionNote = {
+  marginTop: 24, maxWidth: 620,
+  fontSize: 15, opacity: .65, lineHeight: 1.6,
+};
+const dirAServicesGrid = {
+  marginTop: 88,
+  display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: 64,
+};
+const dirAServiceCard = { paddingTop: 24, borderTop: `1px solid ${A_BLACK}` };
+const dirAServiceNum = { fontSize: 12, fontWeight: 700, letterSpacing: '.16em', opacity: .5 };
+const dirAServiceTitle = {
+  marginTop: 56,
+  fontSize: 'clamp(28px, 3vw, 42px)',
+  fontWeight: 800, letterSpacing: '-.03em',
+  lineHeight: 1, margin: 0,
+};
+const dirAServiceBody = { marginTop: 32, fontSize: 16, lineHeight: 1.6, textWrap: 'pretty' };
+const dirAServiceList = { margin: '40px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 14 };
+const dirAServiceItem = { fontSize: 14, opacity: .8, paddingLeft: 0, borderTop: `1px solid ${A_RULE}`, paddingTop: 14 };
+const dirAWorkList = { marginTop: 88, display: 'grid', gap: 0 };
+const dirAWorkRow = {
+  display: 'grid',
+  gridTemplateColumns: '120px 1fr 280px',
+  alignItems: 'center',
+  gap: 32,
+  padding: '44px 0',
+  borderTop: `1px solid ${A_RULE}`,
+};
+const dirAWorkNum = { fontSize: 13, fontWeight: 700, letterSpacing: '.18em', opacity: .55 };
+const dirAWorkBody = {};
+const dirAWorkName = { margin: 0, fontSize: 'clamp(28px, 3vw, 40px)', fontWeight: 700, letterSpacing: '-.02em' };
+const dirAWorkKind = { margin: '8px 0 0', fontSize: 13, opacity: .55, letterSpacing: '.02em' };
+const dirAWorkMetric = { textAlign: 'right' };
+const dirAWorkMetricMain = { margin: 0, fontSize: 18, fontWeight: 700, letterSpacing: '-.01em' };
+const dirAWorkMetricSub = { margin: '6px 0 0', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', opacity: .5 };
+const dirAPricingGrid = {
+  marginTop: 88,
+  display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: 0,
+};
+const dirAPriceCard = {
+  padding: '40px 28px 48px',
+  borderLeft: `1px solid ${A_RULE}`,
+  display: 'flex', flexDirection: 'column',
+  minHeight: 460,
+};
+const dirAPriceCardFeatured = { background: A_BLACK, color: '#fff' };
+const dirAPriceHead = { display: 'flex', alignItems: 'center', justifyContent: 'space-between' };
+const dirAPriceName = { margin: 0, fontSize: 14, fontWeight: 700, letterSpacing: '.16em', textTransform: 'uppercase' };
+const dirAPriceBadge = { fontSize: 14, opacity: .9 };
+const dirAPricePrice = { margin: '48px 0 0', fontSize: 'clamp(26px, 2.6vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1 };
+const dirAPriceUnit = { margin: '10px 0 0', fontSize: 12, letterSpacing: '.16em', textTransform: 'uppercase', opacity: .6 };
+const dirAPriceList = { margin: '48px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 14 };
+const dirAPriceItem = { fontSize: 14, lineHeight: 1.5, opacity: .85 };
+const dirAReviewSummary = {
+  marginTop: 80,
+  display: 'flex', alignItems: 'baseline', gap: 36,
+  paddingBottom: 56,
+  borderBottom: `1px solid ${A_RULE}`,
+};
+const dirAReviewStatBig = { fontSize: 'clamp(80px, 10vw, 140px)', fontWeight: 800, letterSpacing: '-.04em', lineHeight: .9 };
+const dirAReviewStatMeta = { display: 'flex', flexDirection: 'column', gap: 10 };
+const dirAReviewStatLabel = { margin: 0, fontSize: 13, fontWeight: 600, letterSpacing: '.12em', textTransform: 'uppercase' };
+const dirAReviewSource = { margin: 0, fontSize: 11, letterSpacing: '.16em', textTransform: 'uppercase', opacity: .55, display: 'flex', alignItems: 'center', gap: 8 };
+const dirAReviewGrid = {
+  marginTop: 56,
+  display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24,
+};
+const dirAContactGrid = {
+  marginTop: 80,
+  display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 96,
+  alignItems: 'flex-start',
+};
+const dirAForm = { display: 'grid', gap: 32 };
+const dirAFieldWrap = { display: 'grid', gap: 10 };
+const dirAFieldLabel = { fontSize: 11, fontWeight: 700, letterSpacing: '.18em', textTransform: 'uppercase', opacity: .65 };
+const dirAFieldInput = {
+  appearance: 'none',
+  background: 'transparent',
+  border: 0,
+  borderBottom: '1px solid rgba(0,0,0,.18)',
+  padding: '12px 0',
+  fontFamily: A_FONT, fontSize: 17, color: A_BLACK,
+  outline: 'none',
+  transition: 'border-color .15s ease',
+  width: '100%',
+};
+const dirAFieldError = { margin: 0, fontSize: 12, fontWeight: 600, letterSpacing: '.04em' };
+const dirAFormFooter = { display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', marginTop: 8 };
+const dirASubmit = {
+  background: A_BLACK, color: '#fff', border: 0,
+  padding: '18px 32px', fontFamily: A_FONT,
+  fontSize: 12, fontWeight: 700, letterSpacing: '.18em', textTransform: 'uppercase',
+  cursor: 'pointer',
+};
+const dirAFormStatus = { margin: 0, fontSize: 13, fontWeight: 600 };
+const dirAContactSide = { display: 'grid', gap: 14, paddingTop: 32 };
+const dirAContactSideLabel = { margin: 0, fontSize: 11, fontWeight: 700, letterSpacing: '.18em', textTransform: 'uppercase', opacity: .55 };
+const dirAContactSideLink = { color: A_BLACK, textDecoration: 'none', fontSize: 22, fontWeight: 600, letterSpacing: '-.01em', borderBottom: `1px solid ${A_BLACK}`, alignSelf: 'flex-start', paddingBottom: 2 };
+const dirAFooter = { borderTop: `1px solid ${A_RULE}`, marginTop: 80, paddingBlock: 100 };
+const dirAFooterInner = {
+  maxWidth: 1280, margin: '0 auto',
+  padding: '0 56px',
+  display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap',
+};
+const dirAFooterBrand = { margin: 0, fontSize: 'clamp(64px, 11vw, 160px)', fontWeight: 900, letterSpacing: '-.05em', lineHeight: .85 };
+const dirAFooterMeta = { display: 'flex', flexDirection: 'column', gap: 10, textAlign: 'right', fontSize: 13 };
+
+Object.assign(window, { DirectionA });
+</script>
+
+<!-- direction-b -->
+<script type="text/babel">
+function DirectionB({ t, lang, onToggleLang }) {
+  const form = useContactForm(t);
+  const now = React.useMemo(() => {
+    const d = new Date();
+    return d.toISOString().slice(0, 10);
+  }, []);
+
+  return (
+    <div style={dirBShell}>
+      <Brackets />
+
+      <header style={dirBNav}>
+        <div style={dirBNavInner}>
+          <a href="#top" style={dirBNavBrand}>
+            <span style={{ fontWeight: 800 }}>{t.brand}</span>
+            <span style={dirBNavBrandMono}>/ STUDIO</span>
+          </a>
+          <nav style={dirBNavLinks} aria-label="Primary">
+            <a href="#services" style={dirBNavLink}>{t.nav.services}</a>
+            <a href="#work" style={dirBNavLink}>{t.nav.work}</a>
+            <a href="#pricing" style={dirBNavLink}>{t.nav.pricing}</a>
+            <a href="#reviews" style={dirBNavLink}>{t.nav.reviews}</a>
+            <a href="#contact" style={dirBNavLink}>{t.nav.contact}</a>
+          </nav>
+          <button onClick={onToggleLang} style={dirBLangBtn}>
+            [{t.locale_label} · {t.locale_alt}]
+          </button>
+        </div>
+      </header>
+
+      <section id="top" style={dirBHero}>
+        <Reveal>
+          <p style={dirBHeroMeta}>
+            <span style={{ opacity: .55 }}>[{now}]</span> &nbsp; {t.hero.kicker}
+          </p>
+        </Reveal>
+
+        <div style={dirBHeroGrid}>
+          <div>
+            <Reveal delay={120}>
+              <h1 style={dirBHeroTitle}>
+                <span>{t.hero.title_l1}</span>
+                <br />
+                <span style={{ fontStyle: 'italic', fontWeight: 500 }}>{t.hero.title_l2}</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={240}>
+              <p style={dirBHeroSub}>{t.hero.sub}</p>
+            </Reveal>
+            <Reveal delay={320}>
+              <div style={dirBCtaRow}>
+                <a href="#contact" style={dirBCtaPrimary}>
+                  <span style={{ fontFamily: 'inherit' }}>{t.hero.cta_primary}</span>
+                  <span aria-hidden="true" style={{ marginLeft: 14 }}>→</span>
+                </a>
+                <a href="#services" style={dirBCtaSecondary}>{t.hero.cta_secondary}</a>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={200}>
+            <aside style={dirBHeroPanel}>
+              <p style={dirBPanelLabel}>// LIVE — SAMPLE CLIENT</p>
+              <div style={dirBPanelRows}>
+                {[
+                  ['QUERY', '"bistro praha 2"'],
+                  ['POSITION', '#1'],
+                  ['IMPRESSIONS', '+312%'],
+                  ['CTR', '8.4%'],
+                  ['CALLS / MO', '47'],
+                  ['BUILD TIME', '4 wks'],
+                ].map(([k, v]) => (
+                  <div key={k} style={dirBPanelRow}>
+                    <span style={dirBPanelKey}>{k}</span>
+                    <span style={dirBPanelDots} aria-hidden="true" />
+                    <span style={dirBPanelVal}>{v}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={dirBPanelFoot}>
+                <span style={{ opacity: .5 }}>● </span>
+                <span>Bistro Vinohrady — 04/2026</span>
+              </div>
+            </aside>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="services" style={dirBSection}>
+        <BSectionHead kicker={t.services.kicker} headline={t.services.headline} />
+
+        <div style={dirBServicesGrid}>
+          {[
+            { code: 'WEB', title: t.services.a_title, body: t.services.a_body, items: t.services.a_items },
+            { code: 'SEO', title: t.services.b_title, body: t.services.b_body, items: t.services.b_items },
+            { code: 'ADS', title: t.services.c_title, body: t.services.c_body, items: t.services.c_items },
+          ].map((s, i) => (
+            <Reveal key={s.code} delay={i * 120}>
+              <article style={dirBServiceCard}>
+                <div style={dirBServiceHead}>
+                  <span style={dirBServiceCode}>[{s.code}]</span>
+                  <h3 style={dirBServiceTitle}>{s.title}</h3>
+                </div>
+                <p style={dirBServiceBody}>{s.body}</p>
+                <ul style={dirBServiceList}>
+                  {s.items.map((it, idx) => (
+                    <li key={it} style={dirBServiceItem}>
+                      <span style={dirBServiceItemNum}>{String(idx + 1).padStart(2, '0')}</span>
+                      <span>{it}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section style={{ ...dirBSection, paddingTop: 0 }}>
+        <Reveal>
+          <p style={dirBKickerInline}>// {t.process.kicker.toUpperCase()}</p>
+        </Reveal>
+        <div style={dirBProcessRow}>
+          {t.process.steps.map((step, i) => (
+            <Reveal key={step.n} delay={i * 90}>
+              <div style={dirBProcessStep}>
+                <span style={dirBProcessN}>{step.n}</span>
+                <h3 style={dirBProcessT}>{step.t}</h3>
+                <p style={dirBProcessB}>{step.b}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section id="work" style={dirBSection}>
+        <BSectionHead kicker={t.work.kicker} headline={t.work.headline} />
+
+        <div style={dirBWorkTable}>
+          <div style={dirBWorkHeader}>
+            <span>#</span>
+            <span>CLIENT</span>
+            <span>SCOPE</span>
+            <span style={{ textAlign: 'right' }}>RESULT</span>
+            <span style={{ textAlign: 'right' }}>WINDOW</span>
+          </div>
+          {t.work.items.map((w, i) => (
+            <Reveal key={w.n} delay={i * 70}>
+              <article style={dirBWorkRow}>
+                <span style={dirBWorkN}>{w.n}</span>
+                <span style={dirBWorkName}>{w.name}</span>
+                <span style={dirBWorkKind}>{w.kind}</span>
+                <span style={dirBWorkMetric}>{w.metric}</span>
+                <span style={dirBWorkWindow}>{w.window}</span>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section id="pricing" style={dirBSection}>
+        <BSectionHead kicker={t.pricing.kicker} headline={t.pricing.headline} note={t.pricing.note} />
+
+        <div style={dirBPriceGrid}>
+          {t.pricing.tiers.map((tier, i) => (
+            <Reveal key={tier.name} delay={i * 100}>
+              <article style={{ ...dirBPriceCard, ...(tier.featured ? dirBPriceCardFeatured : {}) }}>
+                <div style={dirBPriceHead}>
+                  <span style={dirBPriceCode}>[{String(i + 1).padStart(2, '0')}]</span>
+                  <span style={dirBPriceName}>{tier.name}</span>
+                </div>
+                <p style={dirBPricePrice}>{tier.price}</p>
+                <p style={dirBPriceUnit}>{tier.unit}</p>
+                <ul style={dirBPriceList}>
+                  {tier.items.map((it) => (
+                    <li key={it} style={dirBPriceItem}>
+                      <span style={{ opacity: .4, marginRight: 12 }}>✓</span>{it}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section id="reviews" style={dirBSection}>
+        <BSectionHead kicker={t.reviews.kicker} headline={t.reviews.headline} />
+
+        <Reveal>
+          <div style={dirBReviewBar}>
+            <div style={dirBReviewBarStat}>
+              <span style={dirBReviewBarStatNum}>{t.reviews.stats_avg}</span>
+              <Stars n={5} size={14} />
+              <span style={dirBReviewBarStatLabel}>{t.reviews.stats_avg_label}</span>
+            </div>
+            <div style={dirBReviewBarStat}>
+              <span style={dirBReviewBarStatNum}>{t.reviews.stats_count}</span>
+              <span style={dirBReviewBarStatLabel}>{t.reviews.stats_count_label}</span>
+            </div>
+            <div style={dirBReviewBarSource}>
+              <GoogleG size={14} /> <span>{t.reviews.source}</span>
+            </div>
+          </div>
+        </Reveal>
+
+        <div style={dirBReviewGrid}>
+          {t.reviews.items.map((r, i) => (
+            <Reveal key={r.name} delay={i * 80}>
+              <ReviewCard r={r} variant="b" />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" style={dirBSection}>
+        <BSectionHead kicker={t.contact.kicker} headline={t.contact.headline} note={t.contact.sub} />
+
+        <div style={dirBContactGrid}>
+          <Reveal>
+            <form onSubmit={form.submit} style={dirBForm} noValidate>
+              <BField
+                label={t.contact.labels.name}
+                value={form.vals.name}
+                onChange={form.set('name')}
+                error={form.errs.name}
+                name="name"
+                code="01"
+              />
+              <BField
+                label={t.contact.labels.email}
+                value={form.vals.email}
+                onChange={form.set('email')}
+                error={form.errs.email}
+                name="email"
+                type="email"
+                code="02"
+              />
+              <BField
+                label={t.contact.labels.company}
+                value={form.vals.company}
+                onChange={form.set('company')}
+                name="company"
+                code="03"
+              />
+              <BField
+                label={t.contact.labels.message}
+                value={form.vals.message}
+                onChange={form.set('message')}
+                error={form.errs.message}
+                name="message"
+                multiline
+                code="04"
+              />
+
+              <div style={dirBFormFooter}>
+                <button type="submit" disabled={form.status === 'sending'} style={dirBSubmit}>
+                  {form.status === 'sending' ? t.contact.labels.sending : t.contact.labels.send}
+                  <span style={{ marginLeft: 14 }} aria-hidden="true">→</span>
+                </button>
+                {form.status === 'sent' && (
+                  <p role="status" style={dirBFormStatus}>● {t.contact.labels.sent}</p>
+                )}
+              </div>
+            </form>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <aside style={dirBContactSide}>
+              <p style={dirBPanelLabel}>// {t.contact.direct.toUpperCase()}</p>
+              <a href={`mailto:${t.contact.email}`} style={dirBContactLink}>{t.contact.email}</a>
+              <a href={`tel:${t.contact.phone.replace(/\s/g, '')}`} style={dirBContactLink}>{t.contact.phone}</a>
+            </aside>
+          </Reveal>
+        </div>
+      </section>
+
+      <footer style={dirBFooter}>
+        <div style={dirBFooterInner}>
+          <div>
+            <h2 style={dirBFooterBrand}>{t.brand}</h2>
+            <p style={dirBFooterMono}>// {t.footer.address}</p>
+          </div>
+          <div style={dirBFooterMeta}>
+            <p style={{ margin: 0 }}>{t.footer.copy}</p>
+            <p style={{ margin: '6px 0 0', opacity: .55 }}>{t.footer.links.join(' · ')}</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function BSectionHead({ kicker, headline, note }) {
+  return (
+    <>
+      <Reveal>
+        <p style={dirBKickerInline}>// {kicker.toUpperCase()}</p>
+      </Reveal>
+      <Reveal delay={80}>
+        <h2 style={dirBSectionH}>{headline}</h2>
+      </Reveal>
+      {note && (
+        <Reveal delay={160}>
+          <p style={dirBSectionNote}>{note}</p>
+        </Reveal>
+      )}
+    </>
+  );
+}
+
+function BField({ label, value, onChange, error, multiline, type = 'text', name, code }) {
+  const [focus, setFocus] = React.useState(false);
+  const id = 'fb-' + name;
+  return (
+    <div style={dirBFieldWrap}>
+      <div style={dirBFieldLabelRow}>
+        <span style={dirBFieldCode}>[{code}]</span>
+        <label htmlFor={id} style={dirBFieldLabel}>{label}</label>
+      </div>
+      {multiline ? (
+        <textarea
+          id={id}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          rows={4}
+          style={{
+            ...dirBFieldInput,
+            minHeight: 112, resize: 'vertical',
+            borderColor: error ? '#0a0a0a' : focus ? '#0a0a0a' : 'rgba(0,0,0,.2)',
+          }}
+        />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          style={{
+            ...dirBFieldInput,
+            borderColor: error ? '#0a0a0a' : focus ? '#0a0a0a' : 'rgba(0,0,0,.2)',
+          }}
+        />
+      )}
+      {error && (
+        <p style={dirBFieldError}>
+          <span style={{ opacity: .6 }}>// error: </span>{error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Brackets() {
+  const s = { position: 'fixed', width: 18, height: 18, zIndex: 30, pointerEvents: 'none', borderColor: '#0a0a0a' };
+  return (
+    <>
+      <div style={{ ...s, top: 14, left: 14, borderLeft: '1px solid', borderTop: '1px solid' }} />
+      <div style={{ ...s, top: 14, right: 14, borderRight: '1px solid', borderTop: '1px solid' }} />
+      <div style={{ ...s, bottom: 14, left: 14, borderLeft: '1px solid', borderBottom: '1px solid' }} />
+      <div style={{ ...s, bottom: 14, right: 14, borderRight: '1px solid', borderBottom: '1px solid' }} />
+    </>
+  );
+}
+
+const B_BLACK = '#0a0a0a';
+const B_BG = '#ffffff';
+const B_RULE = 'rgba(0,0,0,.18)';
+const B_RULE_SOFT = 'rgba(0,0,0,.1)';
+const B_SANS = '"Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif';
+const B_MONO = '"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace';
+
+const dirBShell = {
+  fontFamily: B_SANS, color: B_BLACK, background: B_BG,
+  fontSynthesis: 'none', WebkitFontSmoothing: 'antialiased',
+  lineHeight: 1.45, position: 'relative',
+};
+const dirBNav = {
+  position: 'sticky', top: 0, zIndex: 20,
+  background: 'rgba(255,255,255,.94)',
+  backdropFilter: 'saturate(140%) blur(8px)',
+  borderBottom: `1px solid ${B_RULE_SOFT}`,
+};
+const dirBNavInner = {
+  maxWidth: 1320, margin: '0 auto', padding: '18px 72px',
+  display: 'grid', gridTemplateColumns: '1fr auto 1fr',
+  alignItems: 'center', gap: 40,
+};
+const dirBNavBrand = {
+  fontSize: 13, letterSpacing: '.16em',
+  textDecoration: 'none', color: B_BLACK,
+  display: 'flex', alignItems: 'baseline', gap: 10,
+};
+const dirBNavBrandMono = { fontFamily: B_MONO, fontSize: 11, opacity: .5 };
+const dirBNavLinks = { display: 'flex', gap: 36, justifyContent: 'center' };
+const dirBNavLink = {
+  fontFamily: B_MONO, fontSize: 11.5, fontWeight: 500, letterSpacing: '.06em',
+  textTransform: 'uppercase', textDecoration: 'none', color: B_BLACK,
+};
+const dirBLangBtn = {
+  border: '1px solid #0a0a0a', background: 'transparent',
+  padding: '7px 14px', fontFamily: B_MONO,
+  fontSize: 11, letterSpacing: '.06em', cursor: 'pointer',
+  justifySelf: 'end',
+};
+const dirBHero = {
+  maxWidth: 1320, margin: '0 auto', padding: '120px 72px 160px',
+  borderBottom: `1px solid ${B_RULE_SOFT}`,
+};
+const dirBHeroMeta = {
+  margin: 0, fontFamily: B_MONO,
+  fontSize: 11.5, letterSpacing: '.05em', textTransform: 'uppercase',
+};
+const dirBHeroGrid = {
+  marginTop: 72,
+  display: 'grid', gridTemplateColumns: '1.5fr 1fr',
+  gap: 72, alignItems: 'flex-start',
+};
+const dirBHeroTitle = {
+  margin: 0,
+  fontSize: 'clamp(72px, 9.5vw, 156px)',
+  fontWeight: 700, letterSpacing: '-.045em', lineHeight: .95,
+};
+const dirBHeroSub = {
+  marginTop: 40, maxWidth: 520,
+  fontSize: 17, lineHeight: 1.55, opacity: .75, textWrap: 'pretty',
+};
+const dirBCtaRow = { display: 'flex', gap: 28, marginTop: 48, flexWrap: 'wrap' };
+const dirBCtaPrimary = {
+  background: B_BLACK, color: '#fff', textDecoration: 'none',
+  padding: '18px 28px', fontFamily: B_MONO, fontSize: 12, letterSpacing: '.1em',
+  textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center',
+};
+const dirBCtaSecondary = {
+  color: B_BLACK, textDecoration: 'none', padding: '18px 4px',
+  fontFamily: B_MONO, fontSize: 12, letterSpacing: '.1em',
+  textTransform: 'uppercase', borderBottom: `1px solid ${B_BLACK}`,
+};
+const dirBHeroPanel = {
+  border: `1px solid ${B_BLACK}`, padding: '20px 22px 22px', background: '#fff',
+};
+const dirBPanelLabel = {
+  margin: 0, fontFamily: B_MONO, fontSize: 11, letterSpacing: '.04em', opacity: .55,
+};
+const dirBPanelRows = { marginTop: 16, display: 'grid', gap: 10 };
+const dirBPanelRow = { display: 'flex', alignItems: 'baseline', gap: 8, fontFamily: B_MONO, fontSize: 12 };
+const dirBPanelKey = { letterSpacing: '.04em', opacity: .65 };
+const dirBPanelDots = {
+  flex: 1, borderBottom: '1px dotted rgba(0,0,0,.25)', alignSelf: 'flex-end', marginBottom: 4,
+};
+const dirBPanelVal = { fontWeight: 600 };
+const dirBPanelFoot = {
+  marginTop: 20, paddingTop: 12,
+  borderTop: `1px solid ${B_RULE_SOFT}`,
+  fontFamily: B_MONO, fontSize: 11, opacity: .65,
+};
+const dirBSection = {
+  maxWidth: 1320, margin: '0 auto', padding: '140px 72px',
+  borderBottom: `1px solid ${B_RULE_SOFT}`,
+};
+const dirBKickerInline = {
+  margin: 0, fontFamily: B_MONO, fontSize: 11.5, letterSpacing: '.06em', opacity: .65,
+};
+const dirBSectionH = {
+  margin: '20px 0 0',
+  fontSize: 'clamp(40px, 5.2vw, 72px)',
+  fontWeight: 600, letterSpacing: '-.035em', lineHeight: 1.04,
+  maxWidth: 900, textWrap: 'balance',
+};
+const dirBSectionNote = {
+  marginTop: 24, maxWidth: 560, fontSize: 15, opacity: .65, lineHeight: 1.6,
+};
+const dirBServicesGrid = {
+  marginTop: 88, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0,
+};
+const dirBServiceCard = {
+  padding: '40px 32px 8px', borderLeft: `1px solid ${B_BLACK}`, minHeight: 480,
+};
+const dirBServiceHead = { display: 'flex', alignItems: 'baseline', gap: 14 };
+const dirBServiceCode = { fontFamily: B_MONO, fontSize: 12, opacity: .55 };
+const dirBServiceTitle = {
+  margin: 0, fontSize: 'clamp(26px, 2.8vw, 38px)', fontWeight: 600, letterSpacing: '-.025em',
+};
+const dirBServiceBody = { marginTop: 28, fontSize: 15, lineHeight: 1.6 };
+const dirBServiceList = { margin: '40px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 12 };
+const dirBServiceItem = {
+  display: 'flex', alignItems: 'baseline', gap: 16,
+  paddingTop: 14, borderTop: `1px solid ${B_RULE_SOFT}`,
+  fontSize: 14, opacity: .85,
+};
+const dirBServiceItemNum = { fontFamily: B_MONO, fontSize: 11, opacity: .55, letterSpacing: '.04em' };
+const dirBProcessRow = {
+  marginTop: 56, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0,
+};
+const dirBProcessStep = {
+  padding: '32px 28px 24px',
+  borderTop: `1px solid ${B_BLACK}`,
+  borderRight: `1px solid ${B_RULE_SOFT}`,
+  minHeight: 220,
+};
+const dirBProcessN = { fontFamily: B_MONO, fontSize: 12, opacity: .55, letterSpacing: '.06em' };
+const dirBProcessT = { margin: '14px 0 0', fontSize: 24, fontWeight: 600, letterSpacing: '-.02em' };
+const dirBProcessB = { margin: '12px 0 0', fontSize: 14, lineHeight: 1.55, opacity: .75 };
+const dirBWorkTable = { marginTop: 80, borderTop: `1px solid ${B_BLACK}` };
+const dirBWorkHeader = {
+  display: 'grid', gridTemplateColumns: '60px 1.4fr 1.4fr 1.4fr 0.7fr',
+  gap: 32, alignItems: 'center', padding: '16px 0',
+  borderBottom: `1px solid ${B_RULE_SOFT}`,
+  fontFamily: B_MONO, fontSize: 11, letterSpacing: '.06em', opacity: .55,
+};
+const dirBWorkRow = {
+  display: 'grid', gridTemplateColumns: '60px 1.4fr 1.4fr 1.4fr 0.7fr',
+  gap: 32, alignItems: 'baseline', padding: '32px 0',
+  borderBottom: `1px solid ${B_RULE_SOFT}`,
+};
+const dirBWorkN = { fontFamily: B_MONO, fontSize: 12, opacity: .55 };
+const dirBWorkName = { fontSize: 22, fontWeight: 600, letterSpacing: '-.02em' };
+const dirBWorkKind = { fontSize: 14, opacity: .65, lineHeight: 1.45 };
+const dirBWorkMetric = { fontSize: 16, fontWeight: 600, letterSpacing: '-.01em', textAlign: 'right' };
+const dirBWorkWindow = { fontFamily: B_MONO, fontSize: 12, opacity: .65, textAlign: 'right' };
+const dirBPriceGrid = {
+  marginTop: 80, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0,
+  borderTop: `1px solid ${B_BLACK}`, borderBottom: `1px solid ${B_BLACK}`,
+};
+const dirBPriceCard = {
+  padding: '40px 24px 48px', borderRight: `1px solid ${B_RULE_SOFT}`,
+  display: 'flex', flexDirection: 'column', minHeight: 460,
+};
+const dirBPriceCardFeatured = { background: B_BLACK, color: '#fff' };
+const dirBPriceHead = { display: 'flex', alignItems: 'baseline', gap: 14 };
+const dirBPriceCode = { fontFamily: B_MONO, fontSize: 12, opacity: .55 };
+const dirBPriceName = { fontFamily: B_MONO, fontSize: 13, letterSpacing: '.08em', textTransform: 'uppercase' };
+const dirBPricePrice = { margin: '56px 0 0', fontSize: 'clamp(26px, 2.6vw, 36px)', fontWeight: 600, letterSpacing: '-.025em', lineHeight: 1 };
+const dirBPriceUnit = { margin: '10px 0 0', fontFamily: B_MONO, fontSize: 12, opacity: .65 };
+const dirBPriceList = { margin: '48px 0 0', padding: 0, listStyle: 'none', display: 'grid', gap: 12 };
+const dirBPriceItem = { fontSize: 14, lineHeight: 1.5, opacity: .85 };
+const dirBReviewBar = {
+  marginTop: 64, padding: '28px 32px', border: `1px solid ${B_BLACK}`,
+  display: 'flex', alignItems: 'center', gap: 48, flexWrap: 'wrap',
+};
+const dirBReviewBarStat = { display: 'flex', alignItems: 'center', gap: 16 };
+const dirBReviewBarStatNum = { fontSize: 44, fontWeight: 700, letterSpacing: '-.03em', lineHeight: 1 };
+const dirBReviewBarStatLabel = { fontFamily: B_MONO, fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', opacity: .65 };
+const dirBReviewBarSource = {
+  marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10,
+  fontFamily: B_MONO, fontSize: 12, opacity: .8,
+};
+const dirBReviewGrid = {
+  marginTop: 32, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 0,
+  border: `1px solid ${B_BLACK}`, borderRight: 0, borderBottom: 0,
+};
+const dirBContactGrid = {
+  marginTop: 80, display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 80,
+};
+const dirBForm = { display: 'grid', gap: 28 };
+const dirBFieldWrap = { display: 'grid', gap: 10 };
+const dirBFieldLabelRow = { display: 'flex', alignItems: 'baseline', gap: 12 };
+const dirBFieldCode = { fontFamily: B_MONO, fontSize: 11, opacity: .55 };
+const dirBFieldLabel = { fontFamily: B_MONO, fontSize: 12, letterSpacing: '.06em', textTransform: 'uppercase', opacity: .75 };
+const dirBFieldInput = {
+  appearance: 'none', background: 'transparent',
+  border: '1px solid rgba(0,0,0,.2)', padding: '14px 16px',
+  fontFamily: B_SANS, fontSize: 16, color: B_BLACK,
+  outline: 'none', transition: 'border-color .15s ease', width: '100%',
+};
+const dirBFieldError = { margin: 0, fontFamily: B_MONO, fontSize: 11.5 };
+const dirBFormFooter = { display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', marginTop: 12 };
+const dirBSubmit = {
+  background: B_BLACK, color: '#fff', border: 0, padding: '18px 28px',
+  fontFamily: B_MONO, fontSize: 12, letterSpacing: '.1em', textTransform: 'uppercase', cursor: 'pointer',
+};
+const dirBFormStatus = { margin: 0, fontFamily: B_MONO, fontSize: 12 };
+const dirBContactSide = { display: 'grid', gap: 14, alignContent: 'flex-start' };
+const dirBContactLink = {
+  color: B_BLACK, textDecoration: 'none', fontSize: 20, fontWeight: 600,
+  letterSpacing: '-.01em', borderBottom: `1px solid ${B_BLACK}`,
+  alignSelf: 'flex-start', paddingBottom: 2,
+};
+const dirBFooter = { padding: '100px 0 60px' };
+const dirBFooterInner = {
+  maxWidth: 1320, margin: '0 auto', padding: '0 72px',
+  display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap',
+};
+const dirBFooterBrand = { margin: 0, fontSize: 'clamp(56px, 9vw, 128px)', fontWeight: 700, letterSpacing: '-.045em', lineHeight: .9 };
+const dirBFooterMono = { margin: '16px 0 0', fontFamily: B_MONO, fontSize: 12, opacity: .65 };
+const dirBFooterMeta = { fontFamily: B_MONO, fontSize: 12, textAlign: 'right' };
+
+Object.assign(window, { DirectionB });
+</script>
+
+<!-- app -->
+<script type="text/babel">
+const TWEAK_DEFAULTS = {
+  "direction": "A",
+  "lang": "en",
+};
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  const direction = t.direction;
+  const lang = t.lang;
+  const setDirection = (d) => setTweak('direction', d);
+  const setLang = (l) => setTweak('lang', l);
+
+  const i18n = I18N[lang] || I18N.en;
+
+  const switcher = (
+    <div style={swStyles.wrap} aria-label="Design direction">
+      <span style={swStyles.label}>VIEW</span>
+      {['A', 'B'].map((d) => (
+        <button
+          key={d}
+          onClick={() => setDirection(d)}
+          style={{
+            ...swStyles.btn,
+            ...(direction === d ? swStyles.btnActive : null),
+          }}
+          aria-pressed={direction === d}
+        >
+          {d}
+        </button>
+      ))}
+      <span style={swStyles.divider} />
+      {['en', 'cs'].map((l) => (
+        <button
+          key={l}
+          onClick={() => setLang(l)}
+          style={{
+            ...swStyles.btn,
+            ...(lang === l ? swStyles.btnActive : null),
+          }}
+          aria-pressed={lang === l}
+        >
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+
+  const onToggleLang = () => setLang(lang === 'en' ? 'cs' : 'en');
+
+  return (
+    <>
+      {switcher}
+
+      <div
+        key={direction}
+        style={{ animation: 'fadein .35s ease both' }}
+      >
+        {direction === 'A'
+          ? <DirectionA t={i18n} lang={lang} onToggleLang={onToggleLang} />
+          : <DirectionB t={i18n} lang={lang} onToggleLang={onToggleLang} />}
+      </div>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Direction">
+          <TweakRadio
+            label="View"
+            value={direction}
+            onChange={(v) => setDirection(v)}
+            options={[
+              { value: 'A', label: 'Editorial' },
+              { value: 'B', label: 'System' },
+            ]}
+          />
+        </TweakSection>
+
+        <TweakSection label="Language">
+          <TweakRadio
+            label="Locale"
+            value={lang}
+            onChange={(v) => setLang(v)}
+            options={[
+              { value: 'en', label: 'English' },
+              { value: 'cs', label: 'Čeština' },
+            ]}
+          />
+        </TweakSection>
+
+        <TweakSection label="Notes">
+          <div style={{ fontSize: 12, lineHeight: 1.55, opacity: .75 }}>
+            <p style={{ margin: 0 }}>Reviews are mocked. Connect your Google Business Profile Place ID to render a live feed. Contact form submit is also mocked — point it at your endpoint (Formspree, Resend, etc.) before going live.</p>
+          </div>
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+const swStyles = {
+  wrap: {
+    position: 'fixed', bottom: 20, left: '50%', transform: 'translateX(-50%)',
+    zIndex: 50,
+    display: 'flex', alignItems: 'center', gap: 6,
+    background: 'rgba(10,10,10,.92)', color: '#fff',
+    backdropFilter: 'blur(8px)',
+    border: '1px solid rgba(255,255,255,.12)',
+    borderRadius: 999,
+    padding: '6px 10px 6px 16px',
+    boxShadow: '0 12px 40px rgba(0,0,0,.18)',
+    fontFamily: '"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace',
+    fontSize: 11, letterSpacing: '.08em',
+  },
+  label: { opacity: .5, marginRight: 6 },
+  btn: {
+    border: 0, background: 'transparent',
+    padding: '6px 10px',
+    fontFamily: 'inherit', fontSize: 11, letterSpacing: '.08em',
+    cursor: 'pointer', color: '#fff',
+    borderRadius: 999,
+  },
+  btnActive: { background: '#fff', color: '#0a0a0a' },
+  divider: { width: 1, height: 16, background: 'rgba(255,255,255,.18)', margin: '0 4px' },
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
