@@ -712,20 +712,32 @@ function ReviewCard({ r, variant = 'a' }) {
   );
 }
 
-Object.assign(window, { useReveal, Reveal, useContactForm, Stars, Placeholder, ReviewCard, GoogleG });
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = React.useState(() => window.innerWidth < breakpoint);
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+Object.assign(window, { useReveal, Reveal, useContactForm, Stars, Placeholder, ReviewCard, GoogleG, useIsMobile });
 </script>
 
 <!-- direction-a -->
 <script type="text/babel">
 function DirectionA({ t, lang, onToggleLang }) {
   const form = useContactForm(t);
+  const isMobile = useIsMobile();
+  const m = isMobile;
 
   return (
     <div style={dirAShell}>
       <header style={dirANav}>
-        <div style={dirANavInner}>
+        <div style={{...dirANavInner, padding: m ? '16px 20px' : '18px 56px'}}>
           <a href="#top" style={dirANavBrand}>{t.brand}</a>
-          <nav style={dirANavLinks} aria-label="Primary">
+          <nav style={{...dirANavLinks, display: m ? 'none' : 'flex'}} aria-label="Primary">
             <a href="#services" style={dirANavLink}>{t.nav.services}</a>
             <a href="#work" style={dirANavLink}>{t.nav.work}</a>
             <a href="#pricing" style={dirANavLink}>{t.nav.pricing}</a>
@@ -740,13 +752,13 @@ function DirectionA({ t, lang, onToggleLang }) {
         </div>
       </header>
 
-      <section id="top" style={dirAHero}>
+      <section id="top" style={{...dirAHero, padding: m ? '60px 20px 80px' : '120px 56px 140px'}}>
         <Reveal>
           <p style={dirAKicker}>{t.hero.kicker}</p>
         </Reveal>
 
         <Reveal delay={120}>
-          <div style={dirAHeroImageWrap}>
+          <div style={{...dirAHeroImageWrap, width: m ? '100%' : 'min(640px, 60%)', marginTop: m ? 40 : 72}}>
             <Placeholder label="hero image — studio still life" ratio={1.05} />
           </div>
         </Reveal>
@@ -770,7 +782,7 @@ function DirectionA({ t, lang, onToggleLang }) {
 
       <hr style={dirARule} />
 
-      <section id="services" style={dirASection}>
+      <section id="services" style={{...dirASection, padding: m ? '80px 20px' : '140px 56px'}}>
         <Reveal>
           <p style={dirASectionKicker}>{t.services.kicker}</p>
         </Reveal>
@@ -778,14 +790,14 @@ function DirectionA({ t, lang, onToggleLang }) {
           <h2 style={dirASectionH}>{t.services.headline}</h2>
         </Reveal>
 
-        <div style={dirAServicesGrid}>
+        <div style={{...dirAServicesGrid, gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 0 : 64}}>
           {[
             { title: t.services.a_title, body: t.services.a_body, items: t.services.a_items, num: 'A' },
             { title: t.services.b_title, body: t.services.b_body, items: t.services.b_items, num: 'B' },
             { title: t.services.c_title, body: t.services.c_body, items: t.services.c_items, num: 'C' },
           ].map((s, i) => (
             <Reveal key={s.title} delay={i * 140}>
-              <article style={dirAServiceCard}>
+              <article style={{...dirAServiceCard, marginBottom: m ? 48 : 0}}>
                 <div style={dirAServiceNum}>{s.num}</div>
                 <h3 style={dirAServiceTitle}>{s.title}</h3>
                 <p style={dirAServiceBody}>{s.body}</p>
@@ -802,7 +814,7 @@ function DirectionA({ t, lang, onToggleLang }) {
 
       <hr style={dirARule} />
 
-      <section id="work" style={dirASection}>
+      <section id="work" style={{...dirASection, padding: m ? '80px 20px' : '140px 56px'}}>
         <Reveal>
           <p style={dirASectionKicker}>{t.work.kicker}</p>
         </Reveal>
@@ -813,13 +825,13 @@ function DirectionA({ t, lang, onToggleLang }) {
         <div style={dirAWorkList}>
           {t.work.items.map((w, i) => (
             <Reveal key={w.n} delay={i * 90}>
-              <article style={dirAWorkRow}>
-                <span style={dirAWorkNum}>{w.n}</span>
+              <article style={{...dirAWorkRow, gridTemplateColumns: m ? '1fr 1fr' : '120px 1fr 280px', gap: m ? 16 : 32}}>
+                {!m && <span style={dirAWorkNum}>{w.n}</span>}
                 <div style={dirAWorkBody}>
                   <h3 style={dirAWorkName}>{w.name}</h3>
                   <p style={dirAWorkKind}>{w.kind}</p>
                 </div>
-                <div style={dirAWorkMetric}>
+                <div style={{...dirAWorkMetric, textAlign: m ? 'right' : 'right'}}>
                   <p style={dirAWorkMetricMain}>{w.metric}</p>
                   <p style={dirAWorkMetricSub}>{w.window}</p>
                 </div>
@@ -831,7 +843,7 @@ function DirectionA({ t, lang, onToggleLang }) {
 
       <hr style={dirARule} />
 
-      <section id="pricing" style={dirASection}>
+      <section id="pricing" style={{...dirASection, padding: m ? '80px 20px' : '140px 56px'}}>
         <Reveal>
           <p style={dirASectionKicker}>{t.pricing.kicker}</p>
         </Reveal>
@@ -842,10 +854,10 @@ function DirectionA({ t, lang, onToggleLang }) {
           <p style={dirASectionNote}>{t.pricing.note}</p>
         </Reveal>
 
-        <div style={dirAPricingGrid}>
+        <div style={{...dirAPricingGrid, gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)'}}>
           {t.pricing.tiers.map((tier, i) => (
             <Reveal key={tier.name} delay={i * 120}>
-              <article style={{ ...dirAPriceCard, ...(tier.featured ? dirAPriceCardFeatured : {}) }}>
+              <article style={{ ...dirAPriceCard, ...(tier.featured ? dirAPriceCardFeatured : {}), borderLeft: m ? 'none' : `1px solid ${A_RULE}`, borderTop: m ? `1px solid ${A_RULE}` : 'none' }}>
                 <header style={dirAPriceHead}>
                   <h3 style={dirAPriceName}>{tier.name}</h3>
                   {tier.featured && <span style={dirAPriceBadge}>★</span>}
@@ -867,7 +879,7 @@ function DirectionA({ t, lang, onToggleLang }) {
 
       <hr style={dirARule} />
 
-      <section id="reviews" style={dirASection}>
+      <section id="reviews" style={{...dirASection, padding: m ? '80px 20px' : '140px 56px'}}>
         <Reveal>
           <p style={dirASectionKicker}>{t.reviews.kicker}</p>
         </Reveal>
@@ -886,7 +898,7 @@ function DirectionA({ t, lang, onToggleLang }) {
           </div>
         </Reveal>
 
-        <div style={dirAReviewGrid}>
+        <div style={{...dirAReviewGrid, gridTemplateColumns: m ? '1fr' : 'repeat(2, 1fr)'}}>
           {t.reviews.items.map((r, i) => (
             <Reveal key={r.name} delay={i * 100}>
               <ReviewCard r={r} variant="a" />
@@ -897,7 +909,7 @@ function DirectionA({ t, lang, onToggleLang }) {
 
       <hr style={dirARule} />
 
-      <section id="contact" style={dirASection}>
+      <section id="contact" style={{...dirASection, padding: m ? '80px 20px' : '140px 56px'}}>
         <Reveal>
           <p style={dirASectionKicker}>{t.contact.kicker}</p>
         </Reveal>
@@ -908,7 +920,7 @@ function DirectionA({ t, lang, onToggleLang }) {
           <p style={dirASectionNote}>{t.contact.sub}</p>
         </Reveal>
 
-        <div style={dirAContactGrid}>
+        <div style={{...dirAContactGrid, gridTemplateColumns: m ? '1fr' : '1.4fr 1fr', gap: m ? 48 : 96}}>
           <Reveal style={{ height: '100%' }}>
             <form onSubmit={form.submit} style={dirAForm} noValidate>
               <AField
@@ -966,7 +978,7 @@ function DirectionA({ t, lang, onToggleLang }) {
       </section>
 
       <footer style={dirAFooter}>
-        <div style={dirAFooterInner}>
+        <div style={{...dirAFooterInner, padding: m ? '0 20px' : '0 56px'}}>
           <h2 style={dirAFooterBrand}>{t.brand}</h2>
           <div style={dirAFooterMeta}>
             <p style={{ margin: 0 }}>{t.footer.address}</p>
@@ -1253,6 +1265,8 @@ Object.assign(window, { DirectionA });
 <script type="text/babel">
 function DirectionB({ t, lang, onToggleLang }) {
   const form = useContactForm(t);
+  const isMobile = useIsMobile();
+  const m = isMobile;
   const now = React.useMemo(() => {
     const d = new Date();
     return d.toISOString().slice(0, 10);
@@ -1263,12 +1277,12 @@ function DirectionB({ t, lang, onToggleLang }) {
       <Brackets />
 
       <header style={dirBNav}>
-        <div style={dirBNavInner}>
+        <div style={{...dirBNavInner, padding: m ? '16px 20px' : '18px 72px', gridTemplateColumns: m ? 'auto 1fr' : '1fr auto 1fr'}}>
           <a href="#top" style={dirBNavBrand}>
             <span style={{ fontWeight: 800 }}>{t.brand}</span>
-            <span style={dirBNavBrandMono}>/ STUDIO</span>
+            {!m && <span style={dirBNavBrandMono}>/ STUDIO</span>}
           </a>
-          <nav style={dirBNavLinks} aria-label="Primary">
+          <nav style={{...dirBNavLinks, display: m ? 'none' : 'flex'}} aria-label="Primary">
             <a href="#services" style={dirBNavLink}>{t.nav.services}</a>
             <a href="#work" style={dirBNavLink}>{t.nav.work}</a>
             <a href="#pricing" style={dirBNavLink}>{t.nav.pricing}</a>
@@ -1281,14 +1295,14 @@ function DirectionB({ t, lang, onToggleLang }) {
         </div>
       </header>
 
-      <section id="top" style={dirBHero}>
+      <section id="top" style={{...dirBHero, padding: m ? '60px 20px 80px' : '120px 72px 160px'}}>
         <Reveal>
           <p style={dirBHeroMeta}>
             <span style={{ opacity: .55 }}>[{now}]</span> &nbsp; {t.hero.kicker}
           </p>
         </Reveal>
 
-        <div style={dirBHeroGrid}>
+        <div style={{...dirBHeroGrid, gridTemplateColumns: m ? '1fr' : '1.5fr 1fr', marginTop: m ? 40 : 72}}>
           <div>
             <Reveal delay={120}>
               <h1 style={dirBHeroTitle}>
@@ -1339,17 +1353,17 @@ function DirectionB({ t, lang, onToggleLang }) {
         </div>
       </section>
 
-      <section id="services" style={dirBSection}>
+      <section id="services" style={{...dirBSection, padding: m ? '80px 20px' : '140px 72px'}}>
         <BSectionHead kicker={t.services.kicker} headline={t.services.headline} />
 
-        <div style={dirBServicesGrid}>
+        <div style={{...dirBServicesGrid, gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)'}}>
           {[
             { code: 'WEB', title: t.services.a_title, body: t.services.a_body, items: t.services.a_items },
             { code: 'SEO', title: t.services.b_title, body: t.services.b_body, items: t.services.b_items },
             { code: 'ADS', title: t.services.c_title, body: t.services.c_body, items: t.services.c_items },
           ].map((s, i) => (
             <Reveal key={s.code} delay={i * 120}>
-              <article style={dirBServiceCard}>
+              <article style={{...dirBServiceCard, borderLeft: m ? 'none' : `1px solid ${B_BLACK}`, borderTop: m ? `1px solid ${B_BLACK}` : 'none', marginBottom: m ? 0 : 0}}>
                 <div style={dirBServiceHead}>
                   <span style={dirBServiceCode}>[{s.code}]</span>
                   <h3 style={dirBServiceTitle}>{s.title}</h3>
@@ -1369,11 +1383,11 @@ function DirectionB({ t, lang, onToggleLang }) {
         </div>
       </section>
 
-      <section style={{ ...dirBSection, paddingTop: 0 }}>
+      <section style={{ ...dirBSection, padding: m ? '80px 20px' : '140px 72px', paddingTop: 0 }}>
         <Reveal>
           <p style={dirBKickerInline}>// {t.process.kicker.toUpperCase()}</p>
         </Reveal>
-        <div style={dirBProcessRow}>
+        <div style={{...dirBProcessRow, gridTemplateColumns: m ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)'}}>
           {t.process.steps.map((step, i) => (
             <Reveal key={step.n} delay={i * 90}>
               <div style={dirBProcessStep}>
@@ -1386,38 +1400,38 @@ function DirectionB({ t, lang, onToggleLang }) {
         </div>
       </section>
 
-      <section id="work" style={dirBSection}>
+      <section id="work" style={{...dirBSection, padding: m ? '80px 20px' : '140px 72px'}}>
         <BSectionHead kicker={t.work.kicker} headline={t.work.headline} />
 
         <div style={dirBWorkTable}>
-          <div style={dirBWorkHeader}>
+          {!m && <div style={dirBWorkHeader}>
             <span>#</span>
             <span>CLIENT</span>
             <span>SCOPE</span>
             <span style={{ textAlign: 'right' }}>RESULT</span>
             <span style={{ textAlign: 'right' }}>WINDOW</span>
-          </div>
+          </div>}
           {t.work.items.map((w, i) => (
             <Reveal key={w.n} delay={i * 70}>
-              <article style={dirBWorkRow}>
-                <span style={dirBWorkN}>{w.n}</span>
+              <article style={{...dirBWorkRow, gridTemplateColumns: m ? '1fr 1fr' : '60px 1.4fr 1.4fr 1.4fr 0.7fr', gap: m ? 12 : 32}}>
+                {!m && <span style={dirBWorkN}>{w.n}</span>}
                 <span style={dirBWorkName}>{w.name}</span>
-                <span style={dirBWorkKind}>{w.kind}</span>
-                <span style={dirBWorkMetric}>{w.metric}</span>
-                <span style={dirBWorkWindow}>{w.window}</span>
+                {!m && <span style={dirBWorkKind}>{w.kind}</span>}
+                <span style={{...dirBWorkMetric, textAlign: m ? 'right' : 'right'}}>{w.metric}</span>
+                {!m && <span style={dirBWorkWindow}>{w.window}</span>}
               </article>
             </Reveal>
           ))}
         </div>
       </section>
 
-      <section id="pricing" style={dirBSection}>
+      <section id="pricing" style={{...dirBSection, padding: m ? '80px 20px' : '140px 72px'}}>
         <BSectionHead kicker={t.pricing.kicker} headline={t.pricing.headline} note={t.pricing.note} />
 
-        <div style={dirBPriceGrid}>
+        <div style={{...dirBPriceGrid, gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)'}}>
           {t.pricing.tiers.map((tier, i) => (
             <Reveal key={tier.name} delay={i * 100}>
-              <article style={{ ...dirBPriceCard, ...(tier.featured ? dirBPriceCardFeatured : {}) }}>
+              <article style={{ ...dirBPriceCard, ...(tier.featured ? dirBPriceCardFeatured : {}), borderRight: m ? 'none' : `1px solid ${B_RULE_SOFT}`, borderBottom: `1px solid ${B_RULE_SOFT}` }}>
                 <div style={dirBPriceHead}>
                   <span style={dirBPriceCode}>[{String(i + 1).padStart(2, '0')}]</span>
                   <span style={dirBPriceName}>{tier.name}</span>
@@ -1437,7 +1451,7 @@ function DirectionB({ t, lang, onToggleLang }) {
         </div>
       </section>
 
-      <section id="reviews" style={dirBSection}>
+      <section id="reviews" style={{...dirBSection, padding: m ? '80px 20px' : '140px 72px'}}>
         <BSectionHead kicker={t.reviews.kicker} headline={t.reviews.headline} />
 
         <Reveal>
@@ -1457,7 +1471,7 @@ function DirectionB({ t, lang, onToggleLang }) {
           </div>
         </Reveal>
 
-        <div style={dirBReviewGrid}>
+        <div style={{...dirBReviewGrid, gridTemplateColumns: m ? '1fr' : 'repeat(2, 1fr)'}}>
           {t.reviews.items.map((r, i) => (
             <Reveal key={r.name} delay={i * 80}>
               <ReviewCard r={r} variant="b" />
@@ -1466,10 +1480,10 @@ function DirectionB({ t, lang, onToggleLang }) {
         </div>
       </section>
 
-      <section id="contact" style={dirBSection}>
+      <section id="contact" style={{...dirBSection, padding: m ? '80px 20px' : '140px 72px'}}>
         <BSectionHead kicker={t.contact.kicker} headline={t.contact.headline} note={t.contact.sub} />
 
-        <div style={dirBContactGrid}>
+        <div style={{...dirBContactGrid, gridTemplateColumns: m ? '1fr' : '1.4fr 1fr', gap: m ? 48 : 80}}>
           <Reveal>
             <form onSubmit={form.submit} style={dirBForm} noValidate>
               <BField
@@ -1529,7 +1543,7 @@ function DirectionB({ t, lang, onToggleLang }) {
       </section>
 
       <footer style={dirBFooter}>
-        <div style={dirBFooterInner}>
+        <div style={{...dirBFooterInner, padding: m ? '0 20px' : '0 72px'}}>
           <div>
             <h2 style={dirBFooterBrand}>{t.brand}</h2>
             <p style={dirBFooterMono}>// {t.footer.address}</p>
